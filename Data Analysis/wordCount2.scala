@@ -21,3 +21,11 @@ flatMap(rec => (rec.split(" "))).
 map(rec => (rec,1)).
 reduceByKey(_ + _).
 collect().foreach(println)
+
+// 1 Line verion for storing output in a directory
+
+sc.textFile("file:///home/cloudera/Desktop/sampletext.txt").
+flatMap(rec => rec.split(" ")).
+map(rec => (rec,1)).
+reduceByKey(_ + _).
+saveAsTextFile("file:///home/cloudera/Desktop/wcAns")
