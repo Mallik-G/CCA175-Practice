@@ -104,3 +104,49 @@ sqoop import \
 --table orders \
 --warehouse-dir /usr/cloudera/retail_db_avro \
 --as-avrodatafile
+
+#### Command to import a table from MYSQL database to a HIVE database  
+sqoop import \
+--connect jdbc:mysql://127.0.0.1:3306/retail_db \
+--username root \
+--password cloudera \
+--table orders \
+--hive-import \
+--hive-database varun
+
+#### Command to import all tables from MYSQL database to a HIVE database  
+sqoop import-all-tables \
+--connect jdbc:mysql://127.0.0.1:3306/retail_db \
+--username root \
+--password cloudera \
+--hive-import \
+--num-mappers 2 \
+--autoreset-to-one-mapper \
+--hive-database varun_import_all
+
+#### Command to import a table from MYSQL database to a HIVE database with appending the logs 
+sqoop import \
+--connect jdbc:mysql://127.0.0.1:3306/retail_db \
+--username root \
+--password cloudera \
+--table products \
+--hive-import \
+--hive-database varun 2>jobdetails.err 1>jobdetails.out
+
+#### Command to import a table from MYSQL database to a HIVE database with a field delimiter
+sqoop import \
+--connect jdbc:mysql://127.0.0.1:3306/retail_db \
+--username root \
+--password cloudera \
+--table orders \
+--hive-import \
+--hive-database varun \
+--fields-terminated-by '|'
+
+#### Command to export to a table in MYSQL database from a HIVE database
+sqoop export \
+--connect jdbc:mysql://127.0.0.1:3306/retail_export \
+--username root \
+--password cloudera \
+--table orders_wlabs \
+--export-dir /user/hive/warehouse/varun_import_all.db/orders
