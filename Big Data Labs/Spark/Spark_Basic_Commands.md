@@ -11,6 +11,7 @@ sc.getConf.getAll.foreach(println)
 
 #### Creating RDD from HDFS
 val orders = sc.textFile("/public/retail_db/orders")
+val order_items = sc.textFile("/public/retail_db/order_items")
 
 #### Creating RDD from Local File System
 val products = scala.io.Source.fromFile("/data/retail_db/products/part-00000").getLines.toList
