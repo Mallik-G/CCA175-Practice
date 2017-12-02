@@ -16,3 +16,15 @@ order_itemsGBK.map(rec => (rec._1,rec._2.toList.sum)).take(10).foreach(println)
 // Sort in ascending order of values
 val ordersSortedByRevenue = order_itemsGBK.flatMap(rec => {rec._2.toList.sortBy(o => -o).map(k => (rec._1,k))})
 ordersSortedByRevenue.take(10).foreach(println)
+
+// Aggregations - Reduce By Key
+val revenue_perOrderId = order_itemsMap.reduceByKey((total, revenue) => total + revenue)
+val min_revenue_perOrderId = order_itemsMap.reduceByKey((min, revenue) => if(min > revenue) revenue else min)
+
+// Aggregations - Aggregate By Key
+val revenueAndMaxPerProductId = order_itemsMap.
+			aggregateByKey((0.0f,0.0f))(
+			(inter, subtotal) => (inter._1 + subtotal, if (subtotal > inter._2) subtotal else inter._2),
+			(total, inter) => (total._1 + inter._1, if (total._2 > inter._2) total._2 else inter._2)
+			)
+
