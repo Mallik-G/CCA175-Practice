@@ -33,7 +33,17 @@ val productsGroupByCategory = productsMap.groupByKey
 // Get topN prices
 val productsIterable = productsGroupByCategory.first._2
 
-def getTopNProducts(productsIterable: Iterable[String], topN: Int): Iterable[String] = {
+// Get topN priced products
+def getTopNPricedProducts(productsIterable: Iterable[String], topN: Int): Iterable[String] = {
 	val productPrices = productsIterable.map(p => p.split(",")(4).toFloat).toSet
 	val topNPrices = productPrices.toList.sortBy(p => -p).take(topN)
+	val productsSorted = productsIterable.toList.sortBy(product => product.split(",")(4).toFloat)
+	val minOfTopPrices = topNPrices.min
+	val topNPricedProducts = productsSorted.takeWhile(product => product.split(",")(4).toFloat >= minOfTopPrices)
+
+	topNPricedProducts
 } 
+
+getTopNPricedProducts(productsIterable, 5)
+
+val top3PricedProdPerCategory = productsGroupByCategory.flatMap(rec => getTopNPricedProducts(rec._2, 3))
